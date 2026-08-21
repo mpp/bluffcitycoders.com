@@ -165,6 +165,15 @@
   .form-status{font-size:.9rem;color:var(--muted)}
   button.btn{border:none;cursor:pointer;font-family:inherit}
 
+  .beer-box{
+    margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;
+  }
+  .beer-box h3{font-size:1.05rem;margin-bottom:6px;color:var(--amber-strong)}
+  .beer-box p{font-size:.9rem;color:var(--muted);margin-bottom:14px}
+  .beer-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .beer-btn{padding:9px 20px;font-size:.95rem}
+
   footer{
     border-top:1px solid var(--line);padding:34px 0 44px;color:var(--muted);font-size:.88rem;
   }
@@ -335,6 +344,15 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span>Memphis, Tennessee — on-site &amp; remote</span>
         </div>
+        <div class="beer-box" id="beer-box" hidden>
+          <h3>🍺 Pay me a beer</h3>
+          <p>Did something here save your day? Beers gratefully accepted.</p>
+          <div class="beer-btns">
+            <a class="btn btn-ghost beer-btn" data-amount="10" href="#" target="_blank" rel="noopener">$10</a>
+            <a class="btn btn-ghost beer-btn" data-amount="20" href="#" target="_blank" rel="noopener">$20</a>
+            <a class="btn btn-ghost beer-btn" data-amount="50" href="#" target="_blank" rel="noopener">$50</a>
+          </div>
+        </div>
       </div>
       <form id="contact-form" novalidate>
         <div class="f-row">
@@ -387,6 +405,23 @@
      with the message pre-filled — nothing is lost.
      ============================================================ */
   const FORM_ENDPOINT = ""; // <-- paste your Formspree endpoint here
+
+  /* ============================================================
+     "PAY ME A BEER" BUTTONS
+     Set your PayPal.me handle below (just the handle, e.g. "michelem")
+     and the beer box appears automatically, with $10 / $20 / $50
+     linking to paypal.me/<handle>/<amount>usd.
+     Works with any base URL that accepts /<amount> at the end.
+     ============================================================ */
+  const BEER_PAY_BASE = ""; // e.g. "https://paypal.me/yourhandle"
+
+  if (BEER_PAY_BASE) {
+    const box = document.getElementById('beer-box');
+    box.hidden = false;
+    box.querySelectorAll('.beer-btn').forEach(a => {
+      a.href = `${BEER_PAY_BASE.replace(/\/$/, '')}/${a.dataset.amount}usd`;
+    });
+  }
 
   const form = document.getElementById('contact-form');
   const statusEl = document.getElementById('form-status');
